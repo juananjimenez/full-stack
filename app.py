@@ -1,6 +1,8 @@
-from flask import Flask, request
+from flask import Flask, request, render_template, redirect, url_for, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+import sys
+
 
 
 app = Flask(__name__)
@@ -20,17 +22,35 @@ class Todo(db.Model):
     __tablename__ = 'todos'
     id = db.Column(db.Integer, primary_key=True)
     descripcion= db.Column(db.String(), nullable=False)
-    completado = db.Column(db.Boolean, nullable=False, default= False)
+    completado = db.Column(db.Boolean, nullable=True, default= False)
     
 def __repr__(self):
     return f'<Todo ID: {self.id}, descripcion: {self.descripcion}>'
 
+@app.route('/')
+def index():
+    return render_template('index.html', data=Todo.query.all())
+
 @app.route('/todos/create', methods=['Post'])
 def create_todo():
-    descripcion = request.data.get('descripcion', '')
-    todo = Todo(descripcion=descripcion)
-    db.session.add(todo)
-    db.session.commit()
+    body={}
+    error=False
+    try: 
+        descripcion = request.get_json()['descripcion']
+        todo = Todo(descripcion=descripcion)
+        body['descripcion'] = todo.descripcion
+        db.session.add(todo)
+        db.session.commit()
+    except:
+        error = True
+        db.session.rollback()
+        print(sys.exc_info())
+    finally:
+        db.session.close()
+        if error == True:
+            abort(400)
+        else: 
+            return jsonify(body)
 
 if __name__ == "__main__":
     app.run(debug=True)
