@@ -5,27 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mi primera lista de tareas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+      .hidden {
+           display: none;
+    }
+</style>
   </head>
 <body>
   <h1 style="text-align: center">Mi lista de tareas</h1>
+  <main>
+    <div class="contenedor">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xm-12">
+                <div class="ml-auto mr-auto"> 
+   <section class="vh-100" style="background-color: #e2d5de;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-xl-10">
+  
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+  
+              <h6 class="mb-3">Lista de tareas</h6>
+  
+              <form class="d-flex justify-content-center align-items-center mb-4" id='form'>
+                <div class="form-outline flex-fill">
+                  <input type="text" id="descripcion" class="form-control form-control-lg" />
+                </div>
+                <button type="submit" value='create' class="btn btn-primary btn-lg ms-2">Añade</button>
+              </form>
+  
+              <ul class="list-group mb-0" id='todos'>
+                {% for d in data %}
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
+                  <div class="d-flex align-items-center">
+                    <input class="form-check-input me-2" type="checkbox" value="" aria-label="..." />
+                    {{d.descripcion}}
+                  </div>
+                  <a href="#!" data-mdb-toggle="tooltip" title="Remove item">
+                    <i class="fas fa-times text-primary"></i>
+                  </a>
+                </li>  
+                {% endfor %}          
+              </ul>
+              <div class = "hidden" id = "error" > Something went wrong! </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+                </div>
+            </div>
+        </div>
+    </div>
+  </main>
 
-  <form class="row row-cols-lg-auto g-3 align-items-center">
-    <div class="col-6">
-        <label for="example" class="form-label">Tarea a realizar</label>
-        <input type="text" class="form-control" id="descripcion" aria-describedby="tarea">
-    </div>
-    <div class="col-6"><button type="submit" class="btn btn-primary" id="descripcion">Anotar</button>
-    </div>
-  </form>
-<br>
-<br>
-<h2>Lista de tareas por terminar</h2>
-  <ul id='todos'>
-    {% for d in data %}
-    <li>{{ d.descripcion }}</li>
-    {% endfor %}
-  </ul>
-  <div class = "hidden" id = "error" > Something went wrong! </div>
 <script>
 
   const descInput = document.getElementById('descripcion');
