@@ -31,24 +31,24 @@ def index():
 
 @app.route('/todos/create', methods=['Post'])
 def create_todo():
-    error = False
     body={}
+    error = False
     try:
         descripcion  = request.get_json()['descripcion']
         todo = Todo(descripcion = descripcion)
+        body['descripcion'] = todo.descripcion
         db.session.add(todo)
         db.session.commit()
-        body['descripcion'] = todo.descripcion
     except:
-        error = True
+        error == True
         db.session.rollback()
         print(sys.exec_info())
     finally:
         db.session.close()
-    if error:
-        abort(400)
-    else:
-        return jsonify(body)
+        if error == True:
+            abort(400)
+        else:
+            return jsonify(body)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
