@@ -11,6 +11,18 @@
         margin: 0;
         width: 200px;
       }
+      li{
+        clear: both;
+
+      }
+      li button {
+        border: none;
+        outline: none;
+        float: right;
+        color: red;
+        cursor: pointer;
+        font-size: 20px;
+      }
     </style>
   </head>
   <body>
@@ -24,10 +36,14 @@
       <li>
         <input class="check-completed" data-id="{{ todo.id }}" type="checkbox" {% if todo.completed %} checked {% endif %} />
         {{ todo.description }}
+      <button>&cross;</button>
       </li>
       {% endfor %}
     </ul>
+
     <script>
+
+      /// manejo de los checkboxes
       const checkboxes = document.querySelectorAll('.check-completed');
       for (let i = 0; i < checkboxes.length; i++) {
         const checkbox = checkboxes[i];
@@ -51,6 +67,8 @@
           })
         }
       }
+
+      /// manejo de la descripción
       const descInput = document.getElementById('description');
       document.getElementById('form').onsubmit = function(e) {
         e.preventDefault();
@@ -77,12 +95,6 @@
           const text = document.createTextNode(' ' + jsonResponse.description);
           li.appendChild(text);
 
-          const deleteBtn = document.createElement('button');
-          deleteBtn.className = 'delete-button';
-          deleteBtn.setAttribute('data-id', jsonResponse.id);
-          deleteBtn.innerHTML = '&cross;';
-          li.appendChild(deleteBtn);
-
           document.getElementById('todos').appendChild(li);
           document.getElementById('error').className = 'hidden';
         })
@@ -91,6 +103,10 @@
           document.getElementById('error').className = '';
         })
       }
+
+      /// manejo del botón de borrar
+
+      
     </script>
   </body>
 </html>
